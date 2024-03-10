@@ -8,14 +8,84 @@
 import SwiftUI
 
 struct ContentView: View {
-    var body: some View {
-        VStack {
-            Image(systemName: "globe")
-                .imageScale(.large)
-                .foregroundStyle(.tint)
-            Text("Hello, world!")
+        
+    let winLose = 50
+    
+    @State var credits = 1000
+    @State var optionA = Int.random(in: 0...2)
+    @State var optionB = Int.random(in: 0...2)
+    @State var optionC = Int.random(in: 0...2)
+    @State var options = ["apple", "cherry", "star"]
+    
+    func random () {
+        optionA = Int.random(in: 0...2)
+        optionB = Int.random(in: 0...2)
+        optionC = Int.random(in: 0...2)
+    }
+    
+    func spin () {
+        random()
+        
+        let isWinner = optionA == optionB && optionB == optionC
+       
+        if (isWinner) {
+            credits += winLose
+            
+            return
         }
-        .padding()
+        
+        let lestThanZero = credits - winLose
+       
+        if (lestThanZero < 0) {
+            credits = 0
+        } else {
+            credits -= winLose
+        }
+    }
+    
+    var body: some View {
+                
+        Text("SwiftUI Slots!")
+            .bold()
+            .foregroundStyle(.cyan)
+            .font(.title)
+        
+        Spacer()
+        
+        HStack() {
+            Text("Credits: " + String(credits))
+        }
+        
+        Spacer()
+        
+        HStack(){
+            Image(options[optionA])
+                   .resizable()
+                   .scaledToFit()
+               Image(options[optionB])
+                   .resizable()
+                   .scaledToFit()
+               Image(options[optionC])
+                   .resizable()
+                   .scaledToFit()
+        }
+        
+        Spacer()
+        
+        Button(action: {
+            spin()
+        }) {
+            Text("Spin")
+                .frame(minWidth: 0, maxWidth: .infinity)
+                .foregroundColor(.white)
+                .padding()
+                .background(credits > 0 ? Color.red : Color.gray)
+                .cornerRadius(25)
+                .padding(.horizontal, 16)
+                .frame(width: 150, height: 50)
+        }
+        .disabled(credits <= 0)
+
     }
 }
 
