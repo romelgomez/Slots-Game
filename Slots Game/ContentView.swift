@@ -9,7 +9,8 @@ import SwiftUI
 
 struct ContentView: View {
         
-    let winLose = 50
+    let win = 500
+    let lose = 50
     
     @State var credits = 1000
     @State var optionA = Int.random(in: 0...2)
@@ -29,17 +30,17 @@ struct ContentView: View {
         let isWinner = optionA == optionB && optionB == optionC
        
         if (isWinner) {
-            credits += winLose
+            credits += win
             
             return
         }
         
-        let lestThanZero = credits - winLose
+        let lestThanZero = credits - lose
        
         if (lestThanZero < 0) {
             credits = 0
         } else {
-            credits -= winLose
+            credits -= lose
         }
     }
     
